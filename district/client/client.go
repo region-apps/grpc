@@ -51,8 +51,9 @@ func getClientWithContext(ctx context.Context, o Options) (*Client, error) {
 
 	dialOpts := []grpc.DialOption{}
 	dialOpts = append(dialOpts, grpc.WithInsecure())
-	dialOpts = append(dialOpts, grpc.MaxCallRecvMsgSize(grpcClient.MaxMessageSize*1024*1024))
-	dialOpts = append(dialOpts, grpc.MaxCallSendMsgSize(grpcClient.MaxMessageSize*1024*1024))
+	dialOpts = append(dialOpts, grpc.WithDefaultCallOptions(
+		grpc.MaxCallRecvMsgSize(grpcClient.MaxMessageSize*1024*1024),
+	))
 
 	conn, err := grpc.DialContext(ctx, o.Address, dialOpts...)
 	if err != nil {
